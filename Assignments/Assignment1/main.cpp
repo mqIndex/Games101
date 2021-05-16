@@ -51,7 +51,7 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     Eigen::Matrix4f Ortho = Eigen::Matrix4f::Identity();
 
     float eye_fov_radian = MY_PI * eye_fov / 180.0f;
-    float t = tan(eye_fov_radian/2) * abs(zNear);
+    float t = tan(eye_fov_radian/2) * zNear;
     float r = aspect_ratio * t;
     Eigen::Matrix4f Ortho_scale = Eigen::Matrix4f::Identity();
     Ortho_scale << 1/r, 0, 0, 0,
@@ -67,9 +67,9 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio,
     Ortho = Ortho_scale * Ortho_trans;
     
     Eigen::Matrix4f Persp2Ortho = Eigen::Matrix4f::Identity();
-    Persp2Ortho << 1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, (zNear+zFar)/zNear, (-zNear*zFar)/zNear,
+    Persp2Ortho << zNear, 0, 0, 0,
+    0, zNear, 0, 0,
+    0, 0, zNear+zFar, -zNear*zFar,
     0, 0, 1, 0;
 
     projection = Ortho * Persp2Ortho;
