@@ -27,8 +27,8 @@ Eigen::Matrix4f get_model_matrix(float rotation_angle)
     Eigen::Matrix4f model = Eigen::Matrix4f::Identity();
     Eigen::Matrix4f rotate = Eigen::Matrix4f::Identity();
     float rotation_radian = MY_PI * rotation_angle / 180.0f;
-    rotate << cos(rotation_radian), -sin(rotation_radian), 0, 0,
-        sin(rotation_radian), cos(rotation_radian), 0, 0, 
+    rotate << std::cos(rotation_radian), -std::sin(rotation_radian), 0, 0,
+        std::sin(rotation_radian), std::cos(rotation_radian), 0, 0, 
         0, 0, 1, 0,
         0, 0, 0, 1;
 
@@ -42,12 +42,12 @@ Eigen::Matrix4f get_projection_matrix(float eye_fov, float aspect_ratio, float z
     Eigen::Matrix4f Ortho = Eigen::Matrix4f::Identity();
 
     float eye_fov_radian = MY_PI * eye_fov / 180.0f;
-    float t = tan(eye_fov_radian/2) * zNear;
+    float t = std::tan(eye_fov_radian/2) * zNear;
     float r = aspect_ratio * t;
     Eigen::Matrix4f Ortho_scale = Eigen::Matrix4f::Identity();
     Ortho_scale << 1/r, 0, 0, 0,
     0, 1/t, 0, 0,
-    0, 0, 2/abs(zNear-zFar),
+    0, 0, 2/std::abs(zNear-zFar),
     0, 0, 0, 0, 1;
     Eigen::Matrix4f Ortho_trans = Eigen::Matrix4f::Identity();
     Ortho_trans << 1, 0, 0, 0,
