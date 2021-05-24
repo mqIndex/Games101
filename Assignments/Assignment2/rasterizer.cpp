@@ -8,7 +8,7 @@
 #include "rasterizer.hpp"
 #include <opencv2/opencv.hpp>
 #include <math.h>
-
+#include <iostream>
 
 rst::pos_buf_id rst::rasterizer::load_positions(const std::vector<Eigen::Vector3f> &positions)
 {
@@ -150,13 +150,12 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
                 float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                 float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                 z_interpolated *= w_reciprocal;
-
-                if (z_interpolated < depth_buf[get_index(x, y)]) 
+                if (-z_interpolated < depth_buf[get_index(x, y)]) 
                 {
                     Vector3f color = t.getColor();
                     Vector3f point = {(float)x, (float)y, z_interpolated};
                     set_pixel(point, color);
-                    depth_buf[get_index(x, y)] = z_interpolated;
+                    depth_buf[get_index(x, y)] = -z_interpolated;
                 }
             }
         }
@@ -190,10 +189,17 @@ void rst::rasterizer::clear(rst::Buffers buff)
     }
 }
 
-rst::rasterizer::rasterizer(int w, int h) : width(w), height(h)
+rst::rasterizer::rasterizer(int w, int h, bool bSSAA) : width(w), height(h), bSSAA(true)
 {
     frame_buf.resize(w * h);
-    depth_buf.resize(w * h);
+    if(bSSAA)
+    {
+        depth_buf.resize(4 * w * h);
+    }
+    else
+    {
+        depth_buf.resize(w * h);
+    }
 }
 
 int rst::rasterizer::get_index(int x, int y)
