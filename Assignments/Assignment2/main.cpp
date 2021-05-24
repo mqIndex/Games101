@@ -82,7 +82,7 @@ int main(int argc, const char** argv)
         filename = std::string(argv[1]);
     }
 
-    rst::rasterizer r(700, 700);
+    rst::rasterizer r(700, 700, true);
 
     Eigen::Vector3f eye_pos = {0,0,5};
 
