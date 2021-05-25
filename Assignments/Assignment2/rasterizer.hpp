@@ -79,7 +79,7 @@ namespace rst
 
         void rasterize_triangle(const Triangle& t);
 
-        void SSAA(float x, float y, const Triangle& t, int& count);
+        void SSAA(float x, float y, const Triangle& t);
 
         // VERTEX SHADER -> MVP -> Clipping -> /.W -> VIEWPORT -> DRAWLINE/DRAWTRI -> FRAGSHADER
 
@@ -93,7 +93,7 @@ namespace rst
         std::map<int, std::vector<Eigen::Vector3f>> col_buf;
 
         std::vector<Eigen::Vector3f> frame_buf;
-
+        std::vector<Eigen::Vector3f> color_buf;
         std::vector<float> depth_buf;
         int get_index(int x, int y);
 
