@@ -201,7 +201,7 @@ void rst::rasterizer::rasterize_triangle(const Triangle& t) {
             {
                 if (insideTriangle((float)x, (float)y, t.v)) 
                 {
-                    auto[alpha, beta, gamma] = computeBarycentric2D(x, y, t.v);
+                    auto[alpha, beta, gamma] = computeBarycentric2D(x + 0.5, y + 0.5, t.v);
                     float w_reciprocal = 1.0/(alpha / v[0].w() + beta / v[1].w() + gamma / v[2].w());
                     float z_interpolated = alpha * v[0].z() / v[0].w() + beta * v[1].z() / v[1].w() + gamma * v[2].z() / v[2].w();
                     z_interpolated *= w_reciprocal;
